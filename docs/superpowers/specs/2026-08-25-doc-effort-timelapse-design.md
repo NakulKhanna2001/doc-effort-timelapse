@@ -158,6 +158,43 @@ Derived by pure functions over the event log:
 - **AI:** golden structured-payload tests (assert the payload shape from known
   metrics); the LLM call itself is smoke-tested, not asserted on exact prose.
 
+## V2: Writing Process Report (added 2026-08-25)
+
+Modeled on processfeedback.org's Google Docs report, adapted to our own event
+log (richer than Google's revisions). V1 shipped capture + basic playback; V2
+turns the output into a real report.
+
+**User feedback driving V2:** current UI "looks bad", shows "no date or time",
+has no charts; analysis is "a bit shallow". Priority: characters vs time chart.
+
+New requirements:
+
+- **Report layout:** card-based sections on a light background, real
+  typography; every timestamp rendered as a human date/time.
+- **Summary card:** total words / characters / sentences, average typing speed
+  (WPM), event counts (insertions / deletions / pastes), first edit and last
+  edit as full date-times, total active writing time.
+- **Sessions & breaks:** detect editing sessions (gap > idle threshold = break);
+  show a table of alternating sessions/breaks with start time and duration.
+- **Charts (characters vs time is the headline):**
+  - Document length + characters added/removed over time.
+  - Typing speed (WPM) over time.
+  - Long pauses are compressed on the x-axis and annotated ("38 min pause"),
+    like the reference; otherwise one break would flatten the whole chart.
+- **Paste events table:** time of paste, characters, text preview.
+- **Playback upgrades:** play/pause with speed control (0.2x–4x), current event
+  timestamp and gap-from-previous displayed while scrubbing.
+- **Persistence fix:** app uses IndexedDbStore; editor resumes seq from stored
+  history (fixes the overwrite-on-reopen latent bug); history survives reload.
+- **AI wiring fix:** Vite dev proxy `/api` → :8787; "AI Insights" button in the
+  report; payload extended with sessions summary.
+
+New units: `src/analysis/sessions.ts`, `src/analysis/timeline.ts` (both pure),
+`src/format.ts` (date/duration formatting), `src/report/*` (section cards).
+Charting via Recharts. Explicitly out of scope for V2: multi-author
+contributions, word-frequency/word-introduction charts, calendar heatmap,
+compare-two-moments diff, PDF export.
+
 ## Open Questions (resolve during planning)
 
 - IndexedDB only vs. optional server persistence for v1.
