@@ -18,10 +18,12 @@ export function SummaryCard({ events }: { events: EditEvent[] }) {
   const words = countWords(finalText);
   const chars = finalText.length;
   const sentences = countSentences(finalText);
+  // Below ~5s of active time the ratio explodes into absurd numbers.
+  const MIN_ACTIVE_MS_FOR_WPM = 5000;
   const wpm =
-    sessions.totalActiveMs === 0
-      ? 0
-      : Math.round((metrics.typedChars / 5) / (sessions.totalActiveMs / 60000));
+    sessions.totalActiveMs < MIN_ACTIVE_MS_FOR_WPM
+      ? '—'
+      : String(Math.round((metrics.typedChars / 5) / (sessions.totalActiveMs / 60000)));
 
   return (
     <>

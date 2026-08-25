@@ -43,12 +43,21 @@ describe('SummaryCard', () => {
     expect(screen.getByTestId('summary-active-time').textContent).toContain(formatDuration(2000));
   });
 
-  it('renders summary-wpm as a numeric string >= 0', () => {
+  it('renders "—" for WPM when active time is too short to be meaningful', () => {
+    // fixture has only 2s of active time — below the 5s minimum
     render(<SummaryCard events={fixture} />);
-    const wpmText = screen.getByTestId('summary-wpm').textContent ?? '';
-    const wpm = parseInt(wpmText, 10);
-    expect(isNaN(wpm)).toBe(false);
-    expect(wpm).toBeGreaterThanOrEqual(0);
+    expect(screen.getByTestId('summary-wpm').textContent).toBe('—');
+  });
+
+  it('renders a sane numeric WPM once there is enough active time', () => {
+    // 100 typed chars over 60s of active time → (100/5)/1min = 20 WPM
+    const events = Array.from({ length: 11 }, (_, i) =>
+      makeEvent({ seq: i, t: i * 6000, from: i * 10, to: i * 10, text: i < 10 ? 'abcdefghij' : '', source: 'input' }),
+    ).slice(0, 10);
+    render(<SummaryCard events={events} />);
+    const wpm = parseInt(screen.getByTestId('summary-wpm').textContent ?? '', 10);
+    expect(wpm).toBeGreaterThan(0);
+    expect(wpm).toBeLessThan(300);
   });
 
   it('renders "No activity yet." when events is empty', () => {

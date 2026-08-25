@@ -31,6 +31,7 @@ export function Editor({ docId, store }: EditorProps) {
             '&.cm-focused': { outline: '2px solid #4a90d9' },
           }),
           placeholder('Start typing or paste text here…'),
+          EditorView.lineWrapping,
           EditorView.updateListener.of((u) => {
             for (const tr of u.transactions) {
               const events = transactionToEvents(tr as Transaction, seqRef.current, Date.now());
