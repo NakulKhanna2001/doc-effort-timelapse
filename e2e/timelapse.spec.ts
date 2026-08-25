@@ -11,7 +11,7 @@ test('type then replay', async ({ page }) => {
   await page.goto('/');
   await page.locator('.cm-content').click();
   await page.keyboard.type('hello');
-  await page.getByText('Load timelapse').click();
+  await page.getByRole('button', { name: 'Generate report' }).click();
   const slider = page.getByRole('slider');
   await slider.fill('0');
   await expect(page.getByTestId('playback-doc')).toHaveText('h');
