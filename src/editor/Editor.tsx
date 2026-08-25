@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { EditorState, Transaction } from '@codemirror/state';
-import { EditorView } from '@codemirror/view';
+import { EditorView, placeholder } from '@codemirror/view';
 import type { StorageAdapter } from '../storage/StorageAdapter';
 import { transactionToEvents } from './capture';
 
@@ -20,6 +20,17 @@ export function Editor({ docId, store }: EditorProps) {
       state: EditorState.create({
         doc: '',
         extensions: [
+          EditorView.theme({
+            '&': {
+              border: '1px solid #bbb',
+              borderRadius: '4px',
+              minHeight: '240px',
+              fontSize: '14px',
+            },
+            '.cm-content': { minHeight: '240px', padding: '8px' },
+            '&.cm-focused': { outline: '2px solid #4a90d9' },
+          }),
+          placeholder('Start typing or paste text here…'),
           EditorView.updateListener.of((u) => {
             for (const tr of u.transactions) {
               const events = transactionToEvents(tr as Transaction, seqRef.current, Date.now());
