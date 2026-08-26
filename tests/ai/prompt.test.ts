@@ -6,8 +6,10 @@ describe('buildPrompt', () => {
     const prompt = buildPrompt({
       metrics: { typedChars: 5, pastedChars: 0, pasteCount: 0, largestPaste: 0, pasteRatio: 0, activeTimeMs: 1000, deletions: 0 },
       effortScore: 80, pasteEvents: [], durationMs: 1000,
+      sessions: { count: 1, totalActiveMs: 1000, longestBreakMs: 0 },
     });
     expect(prompt).toContain('"effortScore": 80');
     expect(prompt).toContain('Authenticity assessment');
+    expect(prompt).toContain('sessions');
   });
 });

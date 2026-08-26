@@ -125,3 +125,13 @@ code {
 [data-testid="playback-doc"] {
   white-space: pre-wrap;
 }
+
+/* AI Insights report */
+.ai-report {
+  white-space: pre-wrap;
+  font-size: 13px;
+  background: #f9fafb;
+  padding: 12px;
+  border-radius: 6px;
+  margin-top: 12px;
+}

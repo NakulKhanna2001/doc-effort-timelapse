@@ -7,6 +7,7 @@ export function buildPrompt(payload: InsightPayload): string {
     '1. Process narrative',
     '2. Authenticity assessment',
     '3. Flagged sections (large instant insertions, if any)',
+    '4. Work pattern (sessions and breaks)',
     '',
     'Data:',
     JSON.stringify(payload, null, 2),
