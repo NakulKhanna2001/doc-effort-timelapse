@@ -19,6 +19,21 @@ test('type then replay', async ({ page }) => {
   await expect(page.getByTestId('playback-doc')).toHaveText('hello');
 });
 
+test('history survives a page reload', async ({ page }) => {
+  await page.goto('/');
+  await page.locator('.cm-content').click();
+  await page.keyboard.type('abc');
+  await page.reload();
+  // editor should restore the doc, then continue appending without overwriting
+  await page.locator('.cm-content').click();
+  await page.keyboard.press('End');
+  await page.keyboard.type('d');
+  await page.getByRole('button', { name: 'Generate report' }).click();
+  const slider = page.getByRole('slider');
+  await slider.fill(String(3)); // 4 events: a,b,c,d → last index 3
+  await expect(page.getByTestId('playback-doc')).toHaveText('abcd');
+});
+
 test('report shows charts', async ({ page }) => {
   await page.goto('/');
   await page.locator('.cm-content').click();

@@ -1,11 +1,11 @@
 import { useMemo, useState } from 'react';
-import { MemoryStore } from './storage/MemoryStore';
+import { IndexedDbStore } from './storage/IndexedDbStore';
 import { Editor } from './editor/Editor';
 import { Report } from './report/Report';
 import type { EditEvent } from './events/types';
 
 export default function App() {
-  const store = useMemo(() => new MemoryStore(), []);
+  const store = useMemo(() => new IndexedDbStore(), []);
   const [events, setEvents] = useState<EditEvent[]>([]);
   useMemo(() => void store.create('doc1'), [store]);
 
