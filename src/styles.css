@@ -112,3 +112,16 @@ table.data td {
 .editor-actions {
   margin-top: 12px;
 }
+
+/* Inline code in tables */
+code {
+  font-size: 12px;
+  background: #f2f4f7;
+  padding: 2px 4px;
+  border-radius: 4px;
+}
+
+/* Playback document — wrap long lines */
+[data-testid="playback-doc"] {
+  white-space: pre-wrap;
+}
