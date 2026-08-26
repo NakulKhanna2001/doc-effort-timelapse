@@ -131,12 +131,13 @@ Derived by pure functions over the event log:
 - On demand ("Generate report"), assemble a structured JSON payload — metrics +
   an event summary (sessions, paste events with sizes, timeline milestones) —
   into a prompt template.
-- Call the Claude API and return a narrative report: process narrative,
-  authenticity assessment, flagged sections.
+- Call an LLM and return a narrative report: process narrative, authenticity
+  assessment, flagged sections.
 - Deterministic input in, text out. The API key stays server-side (small Node /
   serverless proxy); the client never holds it.
-- Model choice finalized at implementation time (consult the `claude-api` skill);
-  default candidates: `claude-sonnet-4-6` for cost, `claude-opus-4-8` for depth.
+- Provider: Gemini (`gemini-3.6-flash` via the REST generateContent API),
+  chosen for cost (switched from Claude 2026-08-26). Key read from
+  `GEMINI_API_KEY`; keep it in the gitignored `.env`, never in the repo.
 
 ## Tech Stack
 

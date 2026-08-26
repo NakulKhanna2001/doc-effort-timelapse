@@ -42,7 +42,7 @@ export function InsightsCard({ events }: Props) {
       )}
       {state === 'error' && (
         <p className="muted" data-testid="ai-error">
-          Insights server not reachable. Start it with: ANTHROPIC_API_KEY=&lt;key&gt; npx tsx server/insights.ts
+          Insights server not reachable. Start it with: GEMINI_API_KEY=&lt;key&gt; npx tsx server/insights.ts
         </p>
       )}
     </div>

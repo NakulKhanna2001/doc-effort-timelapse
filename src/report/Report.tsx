@@ -26,7 +26,7 @@ export function Report({ events }: { events: EditEvent[] }) {
       <section className="card"><h2>Paste Events</h2><p className="sub">Text that arrived in one go</p><PasteCard events={events} /></section>
       <section className="card">
         <h2>AI Insights</h2>
-        <p className="sub">A narrative read of the writing process — powered by Claude</p>
+        <p className="sub">A narrative read of the writing process — powered by Gemini</p>
         <InsightsCard events={events} />
       </section>
     </div>
