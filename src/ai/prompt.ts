@@ -9,6 +9,9 @@ export function buildPrompt(payload: InsightPayload): string {
     '3. Flagged sections (large instant insertions, if any)',
     '4. Work pattern (sessions and breaks)',
     '',
+    'When citing times, use the human-readable ISO fields (startedAt, endedAt,',
+    'pasteEvents[].time) — never echo raw epoch-millisecond numbers.',
+    '',
     'Data:',
     JSON.stringify(payload, null, 2),
   ].join('\n');

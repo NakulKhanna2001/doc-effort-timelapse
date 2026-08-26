@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import Markdown from 'react-markdown';
 import type { EditEvent } from '../events/types';
 import { buildInsightPayload } from '../ai/payload';
 import { requestInsights } from '../ai/client';
@@ -36,9 +37,9 @@ export function InsightsCard({ events }: Props) {
         {state === 'loading' ? 'Analyzing…' : 'Generate AI insights'}
       </button>
       {state === 'success' && (
-        <pre className="ai-report" data-testid="ai-report">
-          {report}
-        </pre>
+        <div className="ai-report" data-testid="ai-report">
+          <Markdown>{report}</Markdown>
+        </div>
       )}
       {state === 'error' && (
         <p className="muted" data-testid="ai-error">

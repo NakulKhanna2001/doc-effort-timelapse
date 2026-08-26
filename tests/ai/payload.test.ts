@@ -11,7 +11,9 @@ describe('buildInsightPayload', () => {
     const payload = buildInsightPayload(events, { idleThresholdMs: 30000 });
     expect(payload.metrics.pasteCount).toBe(1);
     expect(payload.effortScore).toBeGreaterThanOrEqual(0);
-    expect(payload.pasteEvents).toEqual([{ seq: 1, t: 2000, size: 8 }]);
+    expect(payload.pasteEvents).toEqual([{ seq: 1, t: 2000, time: new Date(2000).toISOString(), size: 8 }]);
+    expect(payload.startedAt).toBe(new Date(0).toISOString());
+    expect(payload.endedAt).toBe(new Date(2000).toISOString());
   });
 
   it('includes session breakdown in the payload', () => {

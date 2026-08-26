@@ -18,7 +18,7 @@ app.post('/api/insights', async (req, res) => {
     headers: { 'content-type': 'application/json', 'x-goog-api-key': key },
     body: JSON.stringify({
       contents: [{ parts: [{ text: prompt }] }],
-      generationConfig: { maxOutputTokens: 2048 },
+      generationConfig: { maxOutputTokens: 8192 },
     }),
   });
   if (!upstream.ok) {

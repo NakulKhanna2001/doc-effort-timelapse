@@ -128,10 +128,15 @@ code {
 
 /* AI Insights report */
 .ai-report {
-  white-space: pre-wrap;
   font-size: 13px;
   background: #f9fafb;
   padding: 12px;
   border-radius: 6px;
   margin-top: 12px;
 }
+
+.ai-report h3 { font-size: 14px; color: #101828; margin: 14px 0 6px; }
+.ai-report p, .ai-report li { font-size: 13px; line-height: 1.55; color: #344054; }
+.ai-report ul, .ai-report ol { padding-left: 20px; margin: 6px 0; }
+.ai-report hr { border: none; border-top: 1px solid #eaecf0; margin: 12px 0; }
+.ai-report code { font-size: 12px; }
