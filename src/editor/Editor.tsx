@@ -13,6 +13,9 @@ interface EditorProps {
 export function Editor({ docId, store }: EditorProps) {
   const ref = useRef<HTMLDivElement>(null);
   const seqRef = useRef(0);
+  // Appends are chained so events commit to storage in order; a dropped
+  // write can then only ever be the most recent one (e.g. on instant unload).
+  const writeQueueRef = useRef<Promise<void>>(Promise.resolve());
 
   useEffect(() => {
     let disposed = false;
@@ -44,7 +47,9 @@ export function Editor({ docId, store }: EditorProps) {
                 const events = transactionToEvents(tr as Transaction, seqRef.current, Date.now());
                 for (const e of events) {
                   seqRef.current = e.seq + 1;
-                  void store.append(docId, e);
+                  writeQueueRef.current = writeQueueRef.current.then(() =>
+                    store.append(docId, e),
+                  );
                 }
               }
             }),

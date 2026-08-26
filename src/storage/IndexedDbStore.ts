@@ -2,17 +2,21 @@ import type { EditEvent } from '../events/types';
 import type { StorageAdapter } from './StorageAdapter';
 
 export class IndexedDbStore implements StorageAdapter {
+  private dbPromise?: Promise<IDBDatabase>;
+
   constructor(private dbName = 'doc-timelapse') {}
 
+  // Opened once and cached: per-append opens widened the window in which a
+  // page unload could drop not-yet-committed events.
   private open(): Promise<IDBDatabase> {
-    return new Promise((resolve, reject) => {
+    return (this.dbPromise ??= new Promise((resolve, reject) => {
       const req = indexedDB.open(this.dbName, 1);
       req.onupgradeneeded = () => {
         req.result.createObjectStore('events', { keyPath: ['docId', 'seq'] });
       };
       req.onsuccess = () => resolve(req.result);
       req.onerror = () => reject(req.error);
-    });
+    }));
   }
 
   async create(_docId?: string): Promise<void> {

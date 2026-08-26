@@ -23,6 +23,25 @@ test('history survives a page reload', async ({ page }) => {
   await page.goto('/');
   await page.locator('.cm-content').click();
   await page.keyboard.type('abc');
+  // wait for all three events to be committed to IndexedDB before reloading
+  await expect
+    .poll(() =>
+      page.evaluate(
+        () =>
+          new Promise<number>((resolve) => {
+            const req = indexedDB.open('doc-timelapse', 1);
+            req.onsuccess = () => {
+              const db = req.result;
+              const count = db.transaction('events', 'readonly').objectStore('events').count();
+              count.onsuccess = () => {
+                resolve(count.result);
+                db.close();
+              };
+            };
+          }),
+      ),
+    )
+    .toBe(3);
   await page.reload();
   // editor should restore the doc, then continue appending without overwriting
   await page.locator('.cm-content').click();
